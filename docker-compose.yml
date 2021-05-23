@@ -1,0 +1,65 @@
+version: "3.5"
+
+networks:
+    golang-test:
+
+services:
+    server:
+        container_name: golang-server
+        build:
+            context: .
+        working_dir: /project/golang-server
+        volumes:
+            - .:/project/golang-server
+        ports:
+            - 5123:5123
+        command: top
+        restart: always
+        networks:
+            - golang-test
+    mongo1: 
+        container_name: golang-mongo-1 # port 27017
+        image: mongo
+        restart: always
+        expose:
+            - 27017
+        ports:
+            - 27011:27017
+        volumes:
+            - ./mongo-secret:/usr/mongo-secret
+            - ./entrypoint.sh:/usr/entrypoint.sh
+            - ./entrypoint-2.sh:/usr/entrypoint-2.sh
+        networks:
+            - golang-test
+        command: sh /usr/entrypoint.sh
+    
+    mongo2: 
+        container_name: golang-mongo-2 # port 27017
+        image: mongo
+        restart: always
+        expose:
+            - 27017
+        ports:
+            - 27012:27017
+        volumes:
+            - ./mongo-secret:/usr/mongo-secret
+            - ./entrypoint.sh:/usr/entrypoint.sh
+        networks:
+            - golang-test
+        command: sh /usr/entrypoint.sh
+        
+    mongo3: 
+        container_name: golang-mongo-3 # port 27017
+        image: mongo
+        restart: always
+        expose:
+            - 27017
+        ports:
+            - 27013:27017
+        volumes:
+            - ./mongo-secret:/usr/mongo-secret
+            - ./entrypoint.sh:/usr/entrypoint.sh
+        networks:
+            - golang-test
+        command: sh /usr/entrypoint.sh
+
