@@ -1,4 +1,4 @@
-module main
+module mongotest
 
 go 1.16
 
