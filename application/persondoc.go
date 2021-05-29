@@ -2,16 +2,13 @@ package application
 
 import (
 	"context"
+	"errors"
 	"log"
+	"mongotest/mongotool"
 
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo"
 )
-
-type ModelInter interface {
-	ReadOne(context.Context) interface{}
-	ReadAll(context.Context) interface{}
-}
 
 type PersonDoc struct {
 	Name string `bson: "name,omitempty"`
@@ -21,6 +18,22 @@ type PersonDoc struct {
 
 func (p PersonDoc) getColl() *mongo.Collection {
 	return mt.Client.Database("test").Collection("person")
+}
+
+func (p PersonDoc) Varify() error {
+	if p.Age > 15 {
+		return errors.New("age too big")
+	}
+	return nil
+}
+
+func (p PersonDoc) InsertOne(ctx context.Context, mt mongotool.MongoTool) error {
+	col := p.getColl()
+	_, err := col.InsertOne(ctx, p)
+	if err != nil {
+		return err
+	}
+	return nil
 }
 
 func (p PersonDoc) ReadOne(ctx context.Context) interface{} {

@@ -8,7 +8,12 @@ import (
 	"reflect"
 )
 
-func GetOne(ctx context.Context, m ModelInter) (string, error) {
+type ReadInter interface {
+	ReadOne(context.Context) interface{}
+	ReadAll(context.Context) interface{}
+}
+
+func GetOne(ctx context.Context, m ReadInter) (string, error) {
 	q := m.ReadOne(ctx)
 	res, err := json.Marshal(q)
 	if err != nil {
@@ -17,7 +22,7 @@ func GetOne(ctx context.Context, m ModelInter) (string, error) {
 	return string(res), nil
 }
 
-func GetAll(ctx context.Context, m ModelInter) (string, error) {
+func GetAll(ctx context.Context, m ReadInter) (string, error) {
 	q := m.ReadAll(ctx)
 	res, err := json.Marshal(q)
 	if err != nil {
