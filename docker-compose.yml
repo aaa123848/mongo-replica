@@ -21,14 +21,9 @@ services:
         container_name: golang-mongo-1 # port 27017
         image: mongo
         restart: always
-        expose:
-            - 27017
-        ports:
-            - 27011:27017
         volumes:
             - ./mongo-secret:/usr/mongo-secret
             - ./entrypoint.sh:/usr/entrypoint.sh
-            - ./entrypoint-2.sh:/usr/entrypoint-2.sh
         networks:
             - golang-test
         command: sh /usr/entrypoint.sh
@@ -37,10 +32,6 @@ services:
         container_name: golang-mongo-2 # port 27017
         image: mongo
         restart: always
-        expose:
-            - 27017
-        ports:
-            - 27012:27017
         volumes:
             - ./mongo-secret:/usr/mongo-secret
             - ./entrypoint.sh:/usr/entrypoint.sh
@@ -52,10 +43,6 @@ services:
         container_name: golang-mongo-3 # port 27017
         image: mongo
         restart: always
-        expose:
-            - 27017
-        ports:
-            - 27013:27017
         volumes:
             - ./mongo-secret:/usr/mongo-secret
             - ./entrypoint.sh:/usr/entrypoint.sh
